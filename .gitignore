@@ -1,0 +1,25 @@
+# Dependências instaladas localmente
+node_modules/
+
+# Saídas de build e instaladores
+dist/
+dist-*/
+win-unpacked/
+*.appx
+*.msix
+*.msixbundle
+
+# Cache do Electron e do Electron Builder
+.electron-cache/
+electron-builder-cache/
+
+# Saídas compiladas da ponte nativa
+native/**/bin/
+native/**/obj/
+native/**/publish/
+
+# Segredos e registros locais
+.env
+.env.*
+!.env.example
+*.log

@@ -1,0 +1,43 @@
+{
+  "name": "ilha-windows",
+  "version": "0.1.4",
+  "private": true,
+  "description": "Ilha dinâmica para Windows",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "format": "prettier --write renderer/index.html renderer/styles/main.css renderer/scripts/renderer.js main.js preload.js scripts/add-notification-capability.cjs package.json package-lock.json README.md",
+    "dist": "electron-builder --win nsis",
+    "build:notification-bridge": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-notification-bridge.ps1",
+    "dist:msix": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dist-msix.ps1"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.1.8",
+    "prettier": "^3.10.1"
+  },
+  "build": {
+    "appId": "br.ilha.desktop",
+    "productName": "Ilha",
+    "win": {
+      "target": "nsis"
+    },
+    "appx": {
+      "identityName": "Ilha.DynamicIsland",
+      "publisher": "CN=Ilha Dynamic App Dev",
+      "publisherDisplayName": "Ilha",
+      "minVersion": "10.0.19041.0",
+      "addAutoLaunchExtension": false
+    },
+    "appxManifestCreated": "scripts/add-notification-capability.cjs",
+    "extraResources": [
+      {
+        "from": "native/notification-bridge/publish/IlhaNotificationBridge.exe",
+        "to": "notification-bridge/IlhaNotificationBridge.exe"
+      }
+    ],
+    "directories": {
+      "output": "dist"
+    }
+  }
+}

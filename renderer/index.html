@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ilha</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <section class="island" id="island" aria-label="Ilha dinâmica">
+      <div class="row">
+        <div class="cover" id="cover">♫</div>
+        <div class="track">
+          <div class="title" id="title">Ilha</div>
+          <div class="artist" id="artist">Conecte o Spotify para começar</div>
+        </div>
+        <span class="spotify" title="Spotify" aria-label="Spotify"
+          ><span class="spotify-dot"></span
+        ></span>
+        <div class="controls">
+          <button
+            class="media-control"
+            id="previous"
+            aria-label="Música anterior"
+            title="Música anterior"
+          >
+            ⏮
+          </button>
+          <button
+            class="media-control primary"
+            id="play-toggle"
+            aria-label="Reproduzir"
+            title="Reproduzir"
+          >
+            ▶
+          </button>
+          <button
+            class="media-control"
+            id="next"
+            aria-label="Próxima música"
+            title="Próxima música"
+          >
+            ⏭
+          </button>
+        </div>
+        <div class="local-time-chip" title="Horário local">
+          <div class="local-time-values">
+            <span class="local-clock" id="local-clock">--:--</span
+            ><span class="local-date" id="local-date">Carregando data…</span>
+          </div>
+        </div>
+        <button
+          class="hide-island-button"
+          id="hide-island"
+          type="button"
+          aria-label="Recolher a ilha para liberar a tela"
+          title="Recolher a ilha"
+        >
+          ⌃
+        </button>
+        <button
+          class="quit-app-button"
+          id="quit-app"
+          type="button"
+          aria-label="Fechar o aplicativo Ilha"
+          title="Fechar a Ilha"
+        >
+          ×
+        </button>
+      </div>
+      <div class="progress-meta"><span id="elapsed">0:00</span><span id="duration">0:00</span></div>
+      <div class="bar"><span id="progress"></span></div>
+      <div class="extras">
+        <div class="attention-banner" id="attention-banner" aria-live="polite" hidden>
+          <span class="attention-dot"></span>
+          <div class="attention-copy">
+            <span class="attention-source" id="attention-source">Notificação</span
+            ><strong class="attention-title" id="attention-title"></strong
+            ><span class="attention-body" id="attention-body"></span>
+          </div>
+        </div>
+        <div class="shape-picker" id="shape-picker">
+          <div class="shape-picker-controls">
+            <span class="shape-picker-label" id="shape-label">Formato</span>
+            <button
+              class="shape-select"
+              id="shape-trigger"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-labelledby="shape-label shape-current-label"
+            >
+              <span id="shape-current-label">Reto</span
+              ><span class="shape-select-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div
+              class="shape-options"
+              id="shape-options"
+              role="listbox"
+              aria-label="Escolha o formato da ilha"
+              hidden
+            >
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="flat"
+                aria-selected="true"
+              >
+                Reto
+              </button>
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="pill"
+                aria-selected="false"
+              >
+                Cápsula
+              </button>
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="low"
+                aria-selected="false"
+              >
+                Baixo
+              </button>
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="full"
+                aria-selected="false"
+              >
+                Cheio
+              </button>
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="shift"
+                aria-selected="false"
+              >
+                Deslocado
+              </button>
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="soft"
+                aria-selected="false"
+              >
+                Suave
+              </button>
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="ellipse"
+                aria-selected="false"
+              >
+                Oval
+              </button>
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="deep"
+                aria-selected="false"
+              >
+                Profundo
+              </button>
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="asym"
+                aria-selected="false"
+              >
+                Assimétrico
+              </button>
+              <button
+                class="shape-option"
+                type="button"
+                role="option"
+                data-shape="wave"
+                aria-selected="false"
+              >
+                Ondulado
+              </button>
+            </div>
+          </div>
+          <div class="shape-preview" aria-live="polite">
+            <div class="shape-preview-caption">
+              <span>Prévia</span
+              ><span class="shape-preview-name" id="shape-preview-name">Reto</span>
+            </div>
+            <div class="shape-preview-frame">
+              <div class="shape-preview-shell shape-flat" id="shape-preview-shell"></div>
+            </div>
+          </div>
+        </div>
+        <section class="feature-card messages-card" id="messages-card">
+          <div class="feature-head">
+            <div class="feature-heading">
+              <span class="feature-icon">✉</span><span>Notificações</span>
+            </div>
+            <span class="feature-state" id="messages-preview-state">Desativadas</span>
+          </div>
+          <div class="message-sources">
+            <label class="message-source-option"
+              ><input id="notify-gmail" type="checkbox" /><span>Gmail · Opera</span></label
+            >
+            <label class="message-source-option"
+              ><input id="notify-whatsapp" type="checkbox" /><span>WhatsApp Windows</span></label
+            >
+          </div>
+          <div class="message-actions">
+            <button class="message-activate" id="activate-notifications" type="button">
+              Ativar no Windows</button
+            ><span class="message-status" id="messages-status"
+              >Escolha quais avisos a Ilha deve mostrar.</span
+            >
+          </div>
+        </section>
+        <section class="feature-card spotify-card" id="spotify-card">
+          <div class="spotify-head">
+            <div class="spotify-info">
+              <div class="feature-heading">
+                <span class="feature-icon">♫</span><span>Spotify</span>
+              </div>
+              <div class="spotify-message" id="spotify-preview">Sua conta está conectada</div>
+            </div>
+            <div class="spotify-actions">
+              <span class="spotify-status" id="connected-badge" style="display: none"
+                >● Conectado</span
+              ><button class="disconnect-button" id="disconnect" style="display: none">
+                Desconectar
+              </button>
+            </div>
+          </div>
+          <div class="feature-details" id="spotify-details" hidden>
+            <form class="connect-form" id="connect-form">
+              <input
+                class="client-id"
+                id="client-id"
+                type="text"
+                placeholder="Cole o Client ID do app Spotify"
+                autocomplete="off"
+                spellcheck="false"
+              /><button class="connect-button" id="connect" type="submit">Conectar</button>
+            </form>
+            <div class="help" id="setup-help">
+              No Spotify for Developers, crie um app Web API e adicione o Redirect URI
+              <code>http://127.0.0.1:43821/callback</code>. Depois cole o Client ID acima. A
+              autenticação abre no navegador.
+            </div>
+          </div>
+          <div class="status" id="spotify-status" role="status"></div>
+        </section>
+        <section class="feature-card weather-card" id="weather-card">
+          <div class="feature-head">
+            <div class="feature-heading"><span class="feature-icon">☼</span><span>Clima</span></div>
+            <span class="feature-state" id="weather-preview-state">Sua localização</span>
+          </div>
+          <div class="feature-preview weather-preview">
+            <strong id="temperature">--°</strong><span id="weather-desc">Buscando clima…</span>
+          </div>
+          <div class="feature-details" id="weather-details">
+            <div class="weather">
+              <div class="weather-main">
+                <div class="weather-city" id="weather-city">
+                  Atualiza automaticamente ao abrir a ilha.
+                </div>
+              </div>
+            </div>
+            <form class="city-form" id="city-form">
+              <input
+                class="city-input"
+                id="city-input"
+                type="text"
+                placeholder="Sua cidade (ex.: Campinas, SP)"
+                autocomplete="off"
+              /><button class="city-search" type="submit">Buscar</button>
+            </form>
+          </div>
+        </section>
+        <section class="feature-card timer-card" id="timer-card" aria-label="Temporizador">
+          <div class="feature-head">
+            <div class="feature-heading">
+              <span class="feature-icon">◴</span><span>Temporizador</span>
+            </div>
+            <span class="feature-state" id="timer-state">Pronto</span>
+          </div>
+          <div class="timer-readout" id="timer-readout">00:00</div>
+          <div class="timer-controls">
+            <label class="timer-duration-control"
+              ><input
+                class="timer-preset"
+                id="timer-minutes"
+                type="number"
+                min="0"
+                max="1440"
+                step="1"
+                value="0"
+                aria-label="Minutos"
+              /><span>min</span></label
+            ><label class="timer-duration-control"
+              ><input
+                class="timer-preset"
+                id="timer-seconds"
+                type="number"
+                min="0"
+                max="59"
+                step="1"
+                value="0"
+                aria-label="Segundos"
+              /><span>seg</span></label
+            ><button class="timer-start" id="timer-start" type="button">Iniciar</button
+            ><button class="timer-reset" id="timer-reset" type="button">Zerar</button>
+          </div>
+          <div class="timer-message" id="timer-message" role="status" hidden></div>
+        </section>
+      </div>
+      <button
+        class="restore-island-button"
+        id="restore-island"
+        type="button"
+        aria-label="Mostrar a ilha novamente"
+        title="Mostrar a ilha novamente"
+      >
+        ⌄
+      </button>
+    </section>
+    <script defer src="./scripts/renderer.js"></script>
+  </body>
+</html>
